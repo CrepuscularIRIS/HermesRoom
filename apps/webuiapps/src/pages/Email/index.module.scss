@@ -1,0 +1,291 @@
+$mail-bg: #050607;
+$mail-panel: #0c0d0f;
+$mail-panel-soft: #131519;
+$mail-border: #20242b;
+$mail-text: #e5ecf6;
+$mail-muted: #9aa3b3;
+$mail-danger: #ff6b6b;
+$mail-accent: #3f6ea6;
+
+.mailboxPage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #0a0b0d 0%, $mail-bg 100%);
+  color: $mail-text;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid $mail-border;
+  background: rgba(5, 7, 10, 0.95);
+}
+
+.headerTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.refreshButton {
+  border: 1px solid #2e323a;
+  background: #111318;
+  color: #ced5e1;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.16s ease;
+
+  &:hover {
+    border-color: #484d57;
+    background: #171a20;
+  }
+}
+
+.subHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: $mail-muted;
+  padding: 8px 14px;
+  border-bottom: 1px solid $mail-border;
+}
+
+.agentTabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid $mail-border;
+  background: rgba(10, 12, 15, 0.96);
+}
+
+.agentTab {
+  --agent-color: #4ba3ff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 8px 6px;
+  color: $mail-text;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+  min-height: 60px;
+  transition: 0.16s ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--agent-color) 65%, #ffffff 35%);
+    transform: translateY(-1px);
+  }
+}
+
+.agentTabActive {
+  border-color: var(--agent-color);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--agent-color) 70%, transparent 30%),
+    inset 0 0 0 1px color-mix(in srgb, var(--agent-color) 40%, transparent 60%);
+  background: color-mix(in srgb, var(--agent-color) 14%, rgba(255, 255, 255, 0.03) 86%);
+}
+
+.agentName {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.agentMeta {
+  font-size: 10px;
+  color: $mail-muted;
+  text-transform: uppercase;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  background: #ff845d;
+  color: #1a0c02;
+}
+
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(280px, 38%) minmax(0, 62%);
+  min-height: 0;
+}
+
+.messageList {
+  border-right: 1px solid $mail-border;
+  overflow-y: auto;
+  background: #0a0b0d;
+  scrollbar-width: thin;
+  scrollbar-color: #2e333a #08090b;
+}
+
+.messageItem {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: transparent;
+  color: $mail-text;
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: 0.12s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.messageItemActive {
+  background: rgba(76, 113, 156, 0.2);
+  box-shadow: inset 2px 0 0 $mail-accent;
+}
+
+.messageTopRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.messageType {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #95d0ff;
+}
+
+.messageTime {
+  color: $mail-muted;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.messageSubject {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: $mail-text;
+}
+
+.messageMeta {
+  display: grid;
+  gap: 2px;
+  font-size: 11px;
+  color: $mail-muted;
+}
+
+.detailPane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #111318 0%, #090a0c 100%);
+}
+
+.detailHeader {
+  padding: 14px 16px;
+  border-bottom: 1px solid $mail-border;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailSubject {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.detailMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12px;
+  color: $mail-muted;
+}
+
+.detailBody {
+  flex: 1;
+  margin: 0;
+  padding: 14px 16px 18px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #dce7f8;
+  scrollbar-width: thin;
+  scrollbar-color: #2e333a #08090b;
+}
+
+.messageList::-webkit-scrollbar,
+.detailBody::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.messageList::-webkit-scrollbar-track,
+.detailBody::-webkit-scrollbar-track {
+  background: #08090b;
+}
+
+.messageList::-webkit-scrollbar-thumb,
+.detailBody::-webkit-scrollbar-thumb {
+  background: #2e333a;
+  border-radius: 999px;
+  border: 2px solid #08090b;
+}
+
+.messageList::-webkit-scrollbar-thumb:hover,
+.detailBody::-webkit-scrollbar-thumb:hover {
+  background: #414853;
+}
+
+.emptyState,
+.errorState {
+  padding: 20px;
+  color: $mail-muted;
+  font-size: 13px;
+}
+
+.errorState {
+  color: $mail-danger;
+}
+
+@media (max-width: 860px) {
+  .agentTabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .messageList {
+    border-right: 0;
+    border-bottom: 1px solid $mail-border;
+    max-height: 38%;
+  }
+}
