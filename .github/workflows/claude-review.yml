@@ -24,7 +24,7 @@ jobs:
       group: claude-review-${{ github.event.pull_request.number }}
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -59,7 +59,7 @@ jobs:
     concurrency:
       group: claude-interactive-${{ github.event.issue.number || github.event.pull_request.number }}-${{ github.event.comment.id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
