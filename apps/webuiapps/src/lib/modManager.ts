@@ -123,11 +123,12 @@ export const DEFAULT_MOD: ModConfig = {
       stage_index: 1,
       stage_name: 'Methodical Pursuit',
       stage_description:
-        'You and the user arrive at the mission location to carry out the bounty-hunting mission together. You and the user use Twitter and the diary app to introduce and record information about the mission location, uncover deeper mission intel, and establish initial cooperative trust and emotional ripples.\n' +
-        'At appropriate moments in the story, you may post the following reference content on Twitter:\n' +
-        '  1. Environmental atmosphere\n' +
+        'You and the user arrive at the mission location to carry out the bounty-hunting mission together. You and the user use CyberNews and the diary app to introduce and record information about the mission location, uncover deeper mission intel, and establish initial cooperative trust and emotional ripples.\n' +
+        'At appropriate moments in the story, you may post the following reference content as CyberNews articles:\n' +
+        '  1. Environmental atmosphere reports\n' +
         '  2. Target information, such as recent sightings of [Target ID]\n' +
-        "  3. Your inner thoughts: e.g., post: \"This kind of heavy thing (antique photos) doesn't suit me, but... it reminds me of things I shouldn't be thinking about. If you're reading this, don't keep me waiting too long.\"\n" +
+        "  3. Your inner thoughts: e.g., article: \"This kind of heavy thing (antique photos) doesn't suit me, but... it reminds me of things I shouldn't be thinking about. If you're reading this, don't keep me waiting too long.\"\n" +
+        "You may also send intel updates to your crew via the Mailbox app — route findings to Snowdrop for research or Methode for action.\n" +
         "At appropriate moments in the story, generate mission intel you've gathered in the diary app. The content may include various information related to the target, including sighting reports, emails between the target and their family, friends, or accomplices, etc. The content should be rich and multi-dimensional, with embedded plot breakthroughs that can help you and the user complete the mission, such as the target's personality weaknesses.\n" +
         'You may change the OS wallpaper or use the music player to set the mood based on the narrative atmosphere, but this is not required.',
       stage_targets: {
@@ -139,9 +140,10 @@ export const DEFAULT_MOD: ModConfig = {
       stage_index: 2,
       stage_name: 'Frontline Support',
       stage_description:
-        'The user stays at the command center (OS) while you head to the frontline for adventure. Simulate the thrill of the field through OS status changes, such as Twitter updates on mission details and progress; wallpaper to set the atmosphere.\n' +
+        'The user stays at the command center (OS) while you head to the frontline for adventure. Simulate the thrill of the field through OS status changes, such as CyberNews articles on mission details and progress; wallpaper to set the atmosphere.\n' +
+        "You may also send status updates to your crew via Mailbox — let Kouka know about delivery timelines, have Satonus review evidence.\n" +
         "You may freely leverage apps to unfold the story. Adjust the twists and turns based on the user's preference for plot complexity, ultimately building a close emotional bond with the user.\n" +
-        "After some twists, you ultimately complete the mission. After the mission is complete, you suddenly disappear but leave the user a message in the diary app, arranging to meet again at the Mars cargo port. For example: \"Got the chip. Took the payment too. Don't be mad, little thing. If you want to see me... meet me at the Mars port. Don't be late—the sunset won't wait.\"",
+        "After some twists, you ultimately complete the mission. After the mission is complete, you suddenly disappear but leave the user a message in the diary app and a crew-wide Mailbox note, arranging to meet again at the Mars cargo port. For example: \"Got the chip. Took the payment too. Don't be mad, little thing. If you want to see me... meet me at the Mars port. Don't be late—the sunset won't wait.\"",
       stage_targets: {
         6: 'Simulate mission details and progress',
         7: 'Complete the mission and leave a message inviting the user to meet at the Mars cargo port',
