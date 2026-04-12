@@ -23,16 +23,22 @@ const PIPELINES = join(SHARED, 'pipelines');
 const MAIL_BIN = join(SHARED, 'scripts/mail.mjs');
 const PROFILES = join(HOME, '.hermes/profiles');
 
-// StepFun API config (for 5 MainAgents: lacia, methode, satonus, snowdrop, kouka)
-const STEPFUN_API_KEY = process.env.STEPFUN_API_KEY || (() => {
+// Load API keys from Hermes .env
+function loadHermesKey(name) {
   try {
     const env = readFileSync(join(HOME, '.hermes/.env'), 'utf-8');
-    const match = env.match(/STEPFUN_API_KEY=(.+)/);
+    const match = env.match(new RegExp(`${name}=(.+)`));
     return match ? match[1].trim() : '';
   } catch { return ''; }
-})();
-const STEPFUN_BASE = 'https://api.stepfun.com';
+}
+
+// StepFun API (for 5 MainAgents: lacia, methode, satonus, snowdrop, kouka)
+const STEPFUN_API_KEY = process.env.STEPFUN_API_KEY || loadHermesKey('STEPFUN_API_KEY');
 const STEPFUN_MODEL = 'step-3.5-flash';
+
+// MiniMax API (for Aoi — same as Hermes minimax-cn provider)
+const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY || loadHermesKey('MINIMAX_API_KEY');
+const MINIMAX_MODEL = 'MiniMax-M2.7';
 
 // Load SOUL.md for each agent as system prompt
 function loadSoul(agent) {
@@ -74,31 +80,70 @@ app.post('/api/chat', async (req, res) => {
   res.flushHeaders();
 
   const soul = getSoul(agent);
-  console.log(`[chat/${agent}] StepFun API call, msg="${message.substring(0, 60)}..."`);
+  const isAoi = agent === 'aoi';
+  const apiUrl = isAoi
+    ? 'https://api.minimaxi.com/anthropic/v1/messages'
+    : 'https://api.stepfun.com/step_plan/v1/chat/completions';
+  const apiKey = isAoi ? MINIMAX_API_KEY : STEPFUN_API_KEY;
+  const model = isAoi ? MINIMAX_MODEL : STEPFUN_MODEL;
+
+  console.log(`[chat/${agent}] ${isAoi ? 'MiniMax' : 'StepFun'} API call, msg="${message.substring(0, 60)}..."`);
 
   try {
-    const apiRes = await fetch('https://api.stepfun.com/step_plan/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${STEPFUN_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: STEPFUN_MODEL,
-        messages: [
-          { role: 'system', content: soul },
-          { role: 'user', content: message },
-        ],
-        max_tokens: 4096,
-      }),
-      signal: AbortSignal.timeout(60000),
-    });
+    let content;
 
-    const data = await apiRes.json();
-    const content = data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning || '(no response)';
+    if (isAoi) {
+      // MiniMax uses Anthropic-compatible API
+      const apiRes = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model,
+          system: soul,
+          messages: [{ role: 'user', content: message }],
+          max_tokens: 4096,
+        }),
+        signal: AbortSignal.timeout(30000),
+      });
+      const data = await apiRes.json();
+      // MiniMax returns content as array: [{type:"thinking",...},{type:"text",text:"..."}]
+      if (data.error) {
+        content = `Error: ${data.error.message || JSON.stringify(data.error)}`;
+      } else if (Array.isArray(data.content)) {
+        content = data.content
+          .filter(c => c.type === 'text')
+          .map(c => c.text)
+          .join('\n') || '(no response)';
+      } else {
+        content = '(no response)';
+      }
+    } else {
+      // StepFun uses OpenAI-compatible API
+      const apiRes = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: soul },
+            { role: 'user', content: message },
+          ],
+          max_tokens: 4096,
+        }),
+        signal: AbortSignal.timeout(60000),
+      });
+      const data = await apiRes.json();
+      content = data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning || '(no response)';
+    }
+
     console.log(`[chat/${agent}] response: ${content.substring(0, 100)}...`);
-
-    // Send as SSE lines
     for (const line of content.split('\n')) {
       res.write(`data: ${JSON.stringify({ type: 'content', text: line })}\n\n`);
     }

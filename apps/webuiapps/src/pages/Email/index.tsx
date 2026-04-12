@@ -272,8 +272,8 @@ const EmailPage: React.FC = () => {
               style={{ '--agent-color': agent.color } as React.CSSProperties}
               onClick={() => setActiveAgent(agent.id)}
             >
+              <span className={styles.agentAvatar}>{agent.label[0]}</span>
               <span className={styles.agentName}>{agent.label}</span>
-              <span className={styles.agentMeta}>{agent.id}</span>
               {unread > 0 && <span className={styles.unreadBadge}>{unread}</span>}
             </button>
           );
