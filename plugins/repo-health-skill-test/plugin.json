@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "repo-health-skill-test",
+  "version": "0.1.0",
+  "description": "A minimal skill-only plugin for testing ChatGPT and Codex skill creation against a connected GitHub repository.",
+  "author": {
+    "name": "CrepuscularIRIS"
+  },
+  "repository": "https://github.com/CrepuscularIRIS/HermesRoom",
+  "keywords": ["github", "repository", "triage", "health-check"]
+}
